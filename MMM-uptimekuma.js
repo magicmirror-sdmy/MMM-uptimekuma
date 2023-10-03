@@ -1,25 +1,23 @@
 /* Magic Mirror
- * Module: uptimerobot
+ * Module: uptimekuma
  *
- * By Simon Crnko
+ * By Mike Bishop
+ * Based on uptimerobot by Simon Crnko
  * MIT Licensed.
  */
 
-Module.register("uptimerobot", {
+Module.register("uptimekuma", {
   defaults: {
     updateInterval: 60000,
     retryDelay: 5000,
     useIcons: false,
     useColors: false,
-    maximumEntries: 10,
-    statuses: "0-1-2-8-9"
+    baseUrl: "http://localhost:3001/",
+    statusPage: "default"
   },
-
-  requiresVersion: "2.1.0", // Required version of MagicMirror
 
   start: function () {
     var self = this;
-    var dataRequest = null;
 
     //Flag for check if module is loaded
     this.loaded = false;
@@ -33,11 +31,11 @@ Module.register("uptimerobot", {
   },
 
   getStyles: function () {
-    return ['uptimerobot.css', 'modules/uptimerobot/css/font-awesome.css'];
+    return [this.file('uptimekuma.css')];
   },
 
   getData: function () {
-      this.sendSocketNotification("uptimerobot-getData", this.config);
+      this.sendSocketNotification("uptimekuma-getData", this.config);
   },
 
   createWrapper: function(textToTranslate) {
@@ -71,7 +69,7 @@ Module.register("uptimerobot", {
 
   // socketNotificationReceived from helper
   socketNotificationReceived: function (notification, payload) {
-    if (notification === "uptimerobot-processData") {
+    if (notification === "uptimekuma-processData") {
       this.processData(payload);
         this.updateDom();
     }
@@ -95,19 +93,16 @@ Module.register("uptimerobot", {
     var status = document.createElement('td');
     switch (statusValue) {
       case 0:
-        this.setStatus(status, "PAUSED", "fa fa-pause-circle-o", "paused")
+        this.setStatus(status, "DOWN", "fa fa-arrow-circle-down", "offline");
         break;
       case 1:
-        this.setStatus(status, "NOTCHECKEDYET", "fa fa-retweet", "not-checked-yet");
-        break;
-      case 2:
         this.setStatus(status, "ONLINE", "fa fa-arrow-circle-up", "online");
         break;
-      case 8:
+      case 2:
         this.setStatus(status, "SEEMSDOWN", "fa fa-chevron-circle-down", "seems-down");
         break;
-      case 9:
-        this.setStatus(status, "DOWN", "fa fa-arrow-circle-down", "offline");
+      case 3: // MAINTENANCE
+        this.setStatus(status, "PAUSED", "fa fa-pause-circle-o", "paused")
         break;
       default:
         return "";
@@ -134,7 +129,7 @@ Module.register("uptimerobot", {
         var lineCell = document.createElement("td");
 
         lineCell.className = 'friendlyName';
-        lineCell.innerHTML = element.friendly_name;
+        lineCell.innerHTML = element.name;
         tableLine.appendChild(lineCell);
 
         // add status
@@ -143,12 +138,6 @@ Module.register("uptimerobot", {
       });
 
       wrapper.appendChild(innerTable);
-    } else if (self.config.api_key === undefined) {
-      // Missing API KEY
-      //var wrapperDataNotification = document.createElement("div");
-      // translations  + datanotification
-      //wrapperDataNotification.innerHTML = self.translate("MISSING_API_KEY");
-      wrapper.appendChild(self.createWrapper("MISSING_API_KEY"));
     } else {
       // Loading
       wrapper.className = "dimmed light small";

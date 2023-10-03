@@ -1,12 +1,13 @@
 /* Magic Mirror
- * Node Helper: uptimerobot
+ * Node Helper: uptimekuma
  *
- * By Simon Crnko
+ * By Mike Bishop
+ * Based on uptimerobot by Simon Crnko
  * MIT Licensed.
  */
 
-var NodeHelper = require("node_helper");
-var request = require('request');
+const NodeHelper = require("node_helper");
+const axios = require('axios');
 
 module.exports = NodeHelper.create({
 
@@ -22,10 +23,10 @@ module.exports = NodeHelper.create({
      * argument notification string - The identifier of the noitication.
      * argument payload mixed - The payload of the notification.
      */
-    socketNotificationReceived: function (notification, payload) {
-        if (notification === "uptimerobot-getData") {
+    socketNotificationReceived: async function (notification, payload) {
+        if (notification === "uptimekuma-getData") {
             this.config = payload;
-            this.getData();
+            await this.getData();
         }
     },
 
@@ -35,38 +36,36 @@ module.exports = NodeHelper.create({
      * get a URL request
      *
      */
-    getData: function (config) {
+    getData: async function (config) {
         var self = this;
 
-        var urlApi = "https://api.uptimerobot.com/v2/getMonitors";
         var retry = true;
 
-        var options = {
-            method: 'POST',
-            url: 'https://api.uptimerobot.com/v2/getMonitors',
-            headers: {
-                'cache-control': 'no-cache',
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            form: {
-                api_key: this.config.api_key,
-                format: 'json',
-                logs: '0',
-                // Limit the max number of records to return for the response.
-                limit: this.config.maximumEntries,
-                statuses: this.config.statuses
-            }
-        };
-        request(options, function (error, response, body) {
-            if (error) {
-                retry = false;
-                throw new Error(error);
-            }
-            self.sendSocketNotification("uptimerobot-processData", JSON.parse(body));
-            if (retry) {
-                self.scheduleUpdate((self.loaded) ? -1 : self.config.retryDelay);
-            }
-        });
+        const statusPagePromise = axios.get(config.baseUrl + 'api/status-page/' + config.statusPage);
+        const heartbeatPromise = axios.get(config.baseUrl + 'api/status-page/heartbeat/' + config.statusPage);
+
+        try {
+            const statusPage = await statusPagePromise;
+            const heartbeat = await heartbeatPromise;
+
+            var monitors = statusPage.data.publicGroupList.monitorList;
+            var heartbeatsPerMonitor = heartbeat.heartbeatList;
+        }
+        catch (error) {
+            console.log(error);
+            retry = false;
+            monitors = [];
+        }
+
+        self.sendSocketNotification("uptimekuma-processData", JSON.parse(
+            monitors.map(monitor => ({
+                name: monitor.name,
+                status: heartbeatsPerMonitor[monitor.id].at(-1).status,
+        }))));
+
+        if (retry) {
+            self.scheduleUpdate((self.loaded) ? -1 : self.config.retryDelay);
+        }
     },
 
     /* scheduleUpdate()

@@ -1,17 +1,17 @@
 {
-    "name": "uptimerobot",
-    "version": "1.2.0",
-    "description": "MagicMirror module to monitor uptime of servers via https://uptimerobot.com",
-    "author": "Simon Crnko",
+    "name": "uptimekuma",
+    "version": "1.0.0",
+    "description": "MagicMirror module to monitor uptime of servers via selfhosted Uptime Kuma",
+    "author": "Mike Bishop",
     "license": "MIT",
-    "homepage": "https://github.com/mrVragec/MMM-uptimerobot",
+    "homepage": "https://github.com/MikeBishop/MMM-uptimekuma",
     "keywords": [
-        "uptimerobot",
-        "uptime robot",
+        "uptimekuma",
+        "uptime kuma",
         "uptime",
-        "robot"
+        "kuma"
     ],
-        "repository": {
+    "repository": {
         "type": "git",
         "url": "https://github.com/mrVragec/MMM-uptimerobot"
     },
@@ -25,5 +25,8 @@
         "stylelint-config-standard": "latest",
         "time-grunt": "latest"
     },
-    "contributors": ""
+    "contributors": ["Simon Crnko"],
+    "dependencies": {
+        "axios": "^1.5.1"
+    }
 }

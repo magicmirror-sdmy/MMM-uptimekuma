@@ -1,0 +1,36 @@
+/*
+ * uptimekuma
+ *
+ * By Mike Bishop
+ * Based on uptimerobot by Simon Crnko
+ * MIT Licensed.
+ *
+ */
+
+.uptimekuma .friendlyName {
+    padding-left: 0;
+    padding-right: 25px;
+}
+
+
+/*  Colors  */
+
+.uptimekuma td.colored.online {
+    color: #9FDF9F;
+}
+
+.uptimekuma td.colored.offline {
+    color: #FF8E99;
+}
+
+.uptimekuma td.colored.paused {
+    color: #BCDDFF;
+}
+
+.uptimekuma td.colored.seems-down {
+    color: #FFCC80;
+}
+
+.uptimekuma td.colored.not-checked-yet {
+    color: #D3D3D3;
+}
