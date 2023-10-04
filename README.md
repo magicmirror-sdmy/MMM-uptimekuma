@@ -6,7 +6,7 @@ MagicMirror² to get uptime data from [Uptime Kuma](https://github.com/louislam/
 ![](.github/text.png) ![](.github/text_color.png) ![](.github/icons.png) ![](.github/icons_color.png)
 
 
-## Instalation
+## Installation
 1. Clone this repository in your MagicMirror installation under modules.
 2. Add configuration to config.js
 
