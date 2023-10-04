@@ -7,13 +7,18 @@
  *
  */
 
-.MMM-uptimekuma .friendlyName {
-    padding-left: 0;
-    padding-right: 25px;
+.MMM-uptimekuma table {
+    width: 100%;
+    /* padding: 0 10px; */
 }
 
-.MMM-uptimekuma tr td {
+.MMM-uptimekuma tr td:first-child {
+    padding-left: 0;
+}
+
+.MMM-uptimekuma td {
     vertical-align: top;
+    padding-left: 15px;
 }
 
 /*  Colors  */

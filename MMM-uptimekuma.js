@@ -134,7 +134,10 @@ Module.register("MMM-uptimekuma", {
         }
 
         var innerTable = document.createElement("table");
-        innerTable.className = "small";
+        innerTable.classList.add(collection.name);
+        innerTable.classList.add("inner");
+        innerTable.classList.add("small");
+        innerTable.classList.add("MMM-uptimekuma");
 
         // If we're displaying headers, create a header row for this set
         if (self.config.headers == true || 
