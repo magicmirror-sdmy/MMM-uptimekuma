@@ -1,5 +1,5 @@
 {
-    "name": "uptimekuma",
+    "name": "MMM-uptimekuma",
     "version": "1.0.0",
     "description": "MagicMirror module to monitor uptime of servers via selfhosted Uptime Kuma",
     "author": "Mike Bishop",

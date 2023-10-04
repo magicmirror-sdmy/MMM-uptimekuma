@@ -6,7 +6,7 @@
  * MIT Licensed.
  */
 
-Module.register("uptimekuma", {
+Module.register("MMM-uptimekuma", {
   defaults: {
     updateInterval: 60000,
     retryDelay: 5000,
@@ -21,24 +21,23 @@ Module.register("uptimekuma", {
 
     //Flag for check if module is loaded
     this.loaded = false;
-    if (this.config.api_key !== undefined) {
-      // Schedule update timer.
-      this.getData();
-      setInterval(function () {
-        self.updateDom();
-      }, this.config.updateInterval);
-    }
+
+    // Schedule update timer.
+    this.getData();
+    setInterval(function () {
+      self.updateDom();
+    }, this.config.updateInterval);
   },
 
   getStyles: function () {
-    return [this.file('uptimekuma.css')];
+    return [this.file('MMM-uptimekuma.css')];
   },
 
   getData: function () {
-      this.sendSocketNotification("uptimekuma-getData", this.config);
+    this.sendSocketNotification("uptimekuma-getData", this.config);
   },
 
-  createWrapper: function(textToTranslate) {
+  createWrapper: function (textToTranslate) {
     var wrapperDataNotification = document.createElement("div");
     wrapperDataNotification.innerHTML = this.translate(textToTranslate);
     return wrapperDataNotification;
@@ -60,6 +59,7 @@ Module.register("uptimekuma", {
   },
 
   processData: function (data) {
+    console.log(data);
     this.dataRequest = data;
     if (this.loaded === false) {
       this.updateDom(this.config.animationSpeed);
@@ -71,7 +71,7 @@ Module.register("uptimekuma", {
   socketNotificationReceived: function (notification, payload) {
     if (notification === "uptimekuma-processData") {
       this.processData(payload);
-        this.updateDom();
+      this.updateDom();
     }
   },
 
@@ -121,7 +121,7 @@ Module.register("uptimekuma", {
       var innerTable = document.createElement("table");
       innerTable.className = "small";
 
-      self.dataRequest.monitors.forEach(function (element) {
+      self.dataRequest.forEach(function (element) {
         // create new row for each item in array
         var tableLine = document.createElement("tr");
 

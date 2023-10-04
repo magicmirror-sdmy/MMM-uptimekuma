@@ -36,8 +36,9 @@ module.exports = NodeHelper.create({
      * get a URL request
      *
      */
-    getData: async function (config) {
+    getData: async function () {
         var self = this;
+        var config = self.config;
 
         var retry = true;
 
@@ -48,8 +49,9 @@ module.exports = NodeHelper.create({
             const statusPage = await statusPagePromise;
             const heartbeat = await heartbeatPromise;
 
-            var monitors = statusPage.data.publicGroupList.monitorList;
-            var heartbeatsPerMonitor = heartbeat.heartbeatList;
+            // FIXME: UK can have multiple groups, but we're only looking at the first one
+            var monitors = statusPage.data.publicGroupList[0].monitorList;
+            var heartbeatsPerMonitor = heartbeat.data.heartbeatList;
         }
         catch (error) {
             console.log(error);
@@ -57,11 +59,11 @@ module.exports = NodeHelper.create({
             monitors = [];
         }
 
-        self.sendSocketNotification("uptimekuma-processData", JSON.parse(
+        self.sendSocketNotification("uptimekuma-processData", 
             monitors.map(monitor => ({
                 name: monitor.name,
                 status: heartbeatsPerMonitor[monitor.id].at(-1).status,
-        }))));
+        })));
 
         if (retry) {
             self.scheduleUpdate((self.loaded) ? -1 : self.config.retryDelay);

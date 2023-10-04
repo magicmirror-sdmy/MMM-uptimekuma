@@ -7,7 +7,7 @@
  *
  */
 
-.uptimekuma .friendlyName {
+.MMM-uptimekuma .friendlyName {
     padding-left: 0;
     padding-right: 25px;
 }
@@ -15,22 +15,22 @@
 
 /*  Colors  */
 
-.uptimekuma td.colored.online {
+.MMM-uptimekuma td.colored.online {
     color: #9FDF9F;
 }
 
-.uptimekuma td.colored.offline {
+.MMM-uptimekuma td.colored.offline {
     color: #FF8E99;
 }
 
-.uptimekuma td.colored.paused {
+.MMM-uptimekuma td.colored.paused {
     color: #BCDDFF;
 }
 
-.uptimekuma td.colored.seems-down {
+.MMM-uptimekuma td.colored.seems-down {
     color: #FFCC80;
 }
 
-.uptimekuma td.colored.not-checked-yet {
+.MMM-uptimekuma td.colored.not-checked-yet {
     color: #D3D3D3;
 }
