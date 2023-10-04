@@ -2,8 +2,8 @@
 
 MagicMirror² to get uptime data from [Uptime Kuma](https://github.com/louislam/uptime-kuma) API.
 
-## Examples (from UptimeRobot version)
-![](.github/text.png) ![](.github/text_color.png) ![](.github/icons.png) ![](.github/icons_color.png)
+## Examples
+![](.github/text_single.png) ![](.github/text_colors_horizontal.png) ![](.github/icons_color_single.png) ![](.github/icons_color_vertical.png)
 
 
 ## Installation
