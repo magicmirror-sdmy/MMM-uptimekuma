@@ -12,6 +12,9 @@
     padding-right: 25px;
 }
 
+.MMM-uptimekuma tr td {
+    vertical-align: top;
+}
 
 /*  Colors  */
 

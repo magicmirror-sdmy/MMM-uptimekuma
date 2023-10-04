@@ -9,12 +9,12 @@
 Module.register("MMM-uptimekuma", {
   defaults: {
     updateInterval: 60000,
-    retryDelay: 5000,
     useIcons: false,
     useColors: false,
     baseUrl: "http://localhost:3001/",
     statusPage: "default",
-    headers: "auto"
+    headers: "auto",
+    vertical: true,
   },
 
   start: function () {
@@ -26,7 +26,7 @@ Module.register("MMM-uptimekuma", {
     // Schedule update timer.
     this.getData();
     setInterval(function () {
-      self.updateDom();
+      self.getData();
     }, this.config.updateInterval);
   },
 
@@ -66,6 +66,7 @@ Module.register("MMM-uptimekuma", {
       this.updateDom(this.config.animationSpeed);
     }
     this.loaded = true;
+    this.updateDom();
   },
 
   // socketNotificationReceived from helper
@@ -119,12 +120,26 @@ Module.register("MMM-uptimekuma", {
 
     // If this.dataRequest is not empty
     if (self.dataRequest) {
-      var innerTable = document.createElement("table");
-      innerTable.className = "small";
+      var outerTable = document.createElement("table");
+      outerTable.className = "small";
 
-      self.dataRequest.forEach(function (collection) {
+      var outerTableLine = document.createElement("tr");
+      for( let collection of self.dataRequest ) {
+        var outerTableCell = document.createElement("td");
+        outerTableLine.appendChild(outerTableCell);
+
+        if( self.config.vertical ) {
+          outerTable.appendChild(outerTableLine);
+          outerTableLine = document.createElement("tr");
+        }
+
+        var innerTable = document.createElement("table");
+        innerTable.className = "small";
+
         // If we're displaying headers, create a header row for this set
-        if( headers == true || (headers == "auto" && self.dataRequest.length > 1) ) {
+        if (self.config.headers == true || 
+              (self.config.headers == "auto" && self.dataRequest.length > 1)
+        ) {
           var tableLine = document.createElement("tr");
           var headerCell = document.createElement("th");
           headerCell.colSpan = 2;
@@ -134,7 +149,7 @@ Module.register("MMM-uptimekuma", {
           innerTable.appendChild(tableLine);
         }
 
-        collection.servers.forEach(function (element) {
+        for( let element of collection.monitors ) {
           // create new row for each item in array
           var tableLine = document.createElement("tr");
 
@@ -148,10 +163,15 @@ Module.register("MMM-uptimekuma", {
           // add status
           tableLine.appendChild(self.getStatusTest(element.status));
           innerTable.appendChild(tableLine);
-        });
-      });
+        }
+        outerTableCell.appendChild(innerTable);
+      }
+      
+      if( !self.config.vertical ) {
+        outerTable.appendChild(outerTableLine);
+      }
 
-      wrapper.appendChild(innerTable);
+      wrapper.appendChild(outerTable);
     } else {
       // Loading
       wrapper.className = "dimmed light small";

@@ -40,8 +40,6 @@ module.exports = NodeHelper.create({
         var self = this;
         var config = self.config;
 
-        var retry = true;
-
         const statusPagePromise = axios.get(config.baseUrl + 'api/status-page/' + config.statusPage);
         const heartbeatPromise = axios.get(config.baseUrl + 'api/status-page/heartbeat/' + config.statusPage);
 
@@ -54,22 +52,18 @@ module.exports = NodeHelper.create({
         }
         catch (error) {
             console.log(error);
-            retry = false;
             monitors = [];
         }
 
         self.sendSocketNotification("uptimekuma-processData", 
             groups.map(group => ({
                 name: group.name,
-                monitors: group.monitors.map(monitor => ({
+                monitors: group.monitorList.map(monitor => ({
                     name: monitor.name,
                     status: heartbeatsPerMonitor[monitor.id].at(-1).status,
                 })),
             })));
 
-        if (retry) {
-            self.scheduleUpdate((self.loaded) ? -1 : self.config.retryDelay);
-        }
     },
 
     /* scheduleUpdate()
