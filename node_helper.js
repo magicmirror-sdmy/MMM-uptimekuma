@@ -49,8 +49,7 @@ module.exports = NodeHelper.create({
             const statusPage = await statusPagePromise;
             const heartbeat = await heartbeatPromise;
 
-            // FIXME: UK can have multiple groups, but we're only looking at the first one
-            var monitors = statusPage.data.publicGroupList[0].monitorList;
+            var groups = statusPage.data.publicGroupList;
             var heartbeatsPerMonitor = heartbeat.data.heartbeatList;
         }
         catch (error) {
@@ -60,10 +59,13 @@ module.exports = NodeHelper.create({
         }
 
         self.sendSocketNotification("uptimekuma-processData", 
-            monitors.map(monitor => ({
-                name: monitor.name,
-                status: heartbeatsPerMonitor[monitor.id].at(-1).status,
-        })));
+            groups.map(group => ({
+                name: group.name,
+                monitors: group.monitors.map(monitor => ({
+                    name: monitor.name,
+                    status: heartbeatsPerMonitor[monitor.id].at(-1).status,
+                })),
+            })));
 
         if (retry) {
             self.scheduleUpdate((self.loaded) ? -1 : self.config.retryDelay);

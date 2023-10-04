@@ -13,7 +13,8 @@ Module.register("MMM-uptimekuma", {
     useIcons: false,
     useColors: false,
     baseUrl: "http://localhost:3001/",
-    statusPage: "default"
+    statusPage: "default",
+    headers: "auto"
   },
 
   start: function () {
@@ -121,20 +122,33 @@ Module.register("MMM-uptimekuma", {
       var innerTable = document.createElement("table");
       innerTable.className = "small";
 
-      self.dataRequest.forEach(function (element) {
-        // create new row for each item in array
-        var tableLine = document.createElement("tr");
+      self.dataRequest.forEach(function (collection) {
+        // If we're displaying headers, create a header row for this set
+        if( headers == true || (headers == "auto" && self.dataRequest.length > 1) ) {
+          var tableLine = document.createElement("tr");
+          var headerCell = document.createElement("th");
+          headerCell.colSpan = 2;
+          headerCell.innerHTML = collection.name;
+          headerCell.className = 'header';
+          tableLine.appendChild(headerCell);
+          innerTable.appendChild(tableLine);
+        }
 
-        // create a cell in a row for name of server
-        var lineCell = document.createElement("td");
+        collection.servers.forEach(function (element) {
+          // create new row for each item in array
+          var tableLine = document.createElement("tr");
 
-        lineCell.className = 'friendlyName';
-        lineCell.innerHTML = element.name;
-        tableLine.appendChild(lineCell);
+          // create a cell in a row for name of server
+          var lineCell = document.createElement("td");
 
-        // add status
-        tableLine.appendChild(self.getStatusTest(element.status));
-        innerTable.appendChild(tableLine);
+          lineCell.className = 'friendlyName';
+          lineCell.innerHTML = element.name;
+          tableLine.appendChild(lineCell);
+
+          // add status
+          tableLine.appendChild(self.getStatusTest(element.status));
+          innerTable.appendChild(tableLine);
+        });
       });
 
       wrapper.appendChild(innerTable);
