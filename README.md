@@ -3,7 +3,7 @@
 MagicMirror² to get uptime data from [Uptime Kuma](https://github.com/louislam/uptime-kuma) API.
 
 ## Examples
-![](.github/text_single.png) ![](.github/icons_color_single.png)
+![](.github/text_single.png) ![](.github/icons_color_single.png)<br>
 ![](.github/icons_color_vertical.png) ![](.github/text_colors_horizontal.png)
 
 
