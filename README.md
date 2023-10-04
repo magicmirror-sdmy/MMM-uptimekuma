@@ -33,7 +33,10 @@ No special requirements or dependencies.
 
 | Option           | Description
 |----------------- |-----------
-| `useIcons`       | *Optional* Flag to use icons (true) or text (false) values for status of monitor. <br><br>**Type:** `boolean` <br>Default: false - text values.
-| `useColors`      | *Optional* Flag to use colors (true) for status of monitor<br><br>**Type:** `boolean` <br>Default: false - without colors.
-| `baseUrl`        | *Optional* Base URL of Uptime Kuma install <br>Default: "http://localhost:3001"
-| `statusPage`     | *Optional* Slug of UptimeKuma status page to display <br>Default: "default"
+| `useIcons`       | Flag to use icons (`true`) or text (`false`) values for status of monitor.<br>Default: `false` - text values.
+| `useColors`      | Flag to use colors (`true`) for status of monitor<br>Default: `false` - without colors.
+| `baseUrl`        | Base URL of Uptime Kuma install <br>Default: "http://localhost:3001"
+| `statusPage`     | Slug of UptimeKuma status page to display <br>Default: "default"
+| `headers`        | Display the name of each group from the status page? Values are `true`, `false` or `"auto"`. (Auto is equivalent to `true` if there are multiple groups, but `false` for a single group.)<br>Default: `"auto"`
+| `vertical`       | If multiple groups are defined, should they be laid out vertically (`true`) or horizontally (`false`)?<br>Default: `true`
+| `updateInterval` | Time (in ms) between updates. Note that Uptime Kuma caches status pages for 5 minutes, so updates may take up to 5 minutes to propagate even with a smaller setting.<br>Default: 60000
