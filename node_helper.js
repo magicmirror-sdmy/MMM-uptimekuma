@@ -30,6 +30,22 @@ module.exports = NodeHelper.create({
         }
     },
 
+    urlJoin: function (...args) {
+        // Remove trailing slashes from all components except last
+        var parts = args.map((part, i) => {
+            if (i === args.length - 1) {
+                return part;
+            }
+            return part.replace(/\/+$/, '');
+        });
+
+        // Remove leading slashes from all components
+        parts = parts.map(part => part.replace(/^\/+/, ''));
+
+        // Will throw if input isn't valid
+        return new URL(parts.join('/'));
+    },
+
     /*
      * getData
      * function example return data and show it in the module wrapper
@@ -40,8 +56,12 @@ module.exports = NodeHelper.create({
         var self = this;
         var config = self.config;
 
-        const statusPagePromise = axios.get(config.baseUrl + 'api/status-page/' + config.statusPage);
-        const heartbeatPromise = axios.get(config.baseUrl + 'api/status-page/heartbeat/' + config.statusPage);
+        const statusPagePromise = axios.get(
+            this.urlJoin(config.baseUrl, 'api/status-page', config.statusPage)
+        );
+        const heartbeatPromise = axios.get(
+            this.urlJoin(config.baseUrl, 'api/status-page/heartbeat/', config.statusPage)
+        );
 
         try {
             const statusPage = await statusPagePromise;
@@ -49,20 +69,18 @@ module.exports = NodeHelper.create({
 
             var groups = statusPage.data.publicGroupList;
             var heartbeatsPerMonitor = heartbeat.data.heartbeatList;
+            self.sendSocketNotification("uptimekuma-processData",
+                groups.map(group => ({
+                    name: group.name,
+                    monitors: group.monitorList.map(monitor => ({
+                        name: monitor.name,
+                        status: heartbeatsPerMonitor[monitor.id].at(-1).status,
+                    })),
+                })));
         }
         catch (error) {
             console.log(error);
-            monitors = [];
         }
-
-        self.sendSocketNotification("uptimekuma-processData", 
-            groups.map(group => ({
-                name: group.name,
-                monitors: group.monitorList.map(monitor => ({
-                    name: monitor.name,
-                    status: heartbeatsPerMonitor[monitor.id].at(-1).status,
-                })),
-            })));
 
     },
 
