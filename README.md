@@ -1,6 +1,7 @@
 # MMM-uptimekuma [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/MikeBishop/MMM-uptimekuma/raw/master/LICENSE) 
 
-MagicMirror² to get uptime data from [Uptime Kuma](https://github.com/louislam/uptime-kuma) API.
+MagicMirror² module to get uptime data from an [Uptime
+Kuma](https://github.com/louislam/uptime-kuma) status page.
 
 ## Examples
 ![](.github/text_single.png) ![](.github/icons_color_single.png)<br>
@@ -29,7 +30,13 @@ var config = {
 ```
 ## Requirements
 
-No special requirements or dependencies. 
+Uptime-Kuma must be accessible. Because authentication is required to read
+anything except status pages, this module reflects a given status page. **You
+must create a status page before this module can read it.**
+
+The default status page is named `default`, and will be used if no slug is given
+in the config, but even the default status page does not exist until you create
+it.
 
 ## Configuration options
 
