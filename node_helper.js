@@ -49,20 +49,18 @@ module.exports = NodeHelper.create({
 
             var groups = statusPage.data.publicGroupList;
             var heartbeatsPerMonitor = heartbeat.data.heartbeatList;
+            self.sendSocketNotification("uptimekuma-processData",
+                groups.map(group => ({
+                    name: group.name,
+                    monitors: group.monitorList.map(monitor => ({
+                        name: monitor.name,
+                        status: heartbeatsPerMonitor[monitor.id].at(-1).status,
+                    })),
+                })));
         }
         catch (error) {
             console.log(error);
-            monitors = [];
         }
-
-        self.sendSocketNotification("uptimekuma-processData", 
-            groups.map(group => ({
-                name: group.name,
-                monitors: group.monitorList.map(monitor => ({
-                    name: monitor.name,
-                    status: heartbeatsPerMonitor[monitor.id].at(-1).status,
-                })),
-            })));
 
     },
 
