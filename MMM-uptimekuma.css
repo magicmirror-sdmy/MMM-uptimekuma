@@ -1,44 +1,64 @@
-/*
- * uptimekuma
- *
- * By Mike Bishop
- * Based on uptimerobot by Simon Crnko
- * MIT Licensed.
- *
- */
-
-.MMM-uptimekuma table {
-    width: 100%;
-    /* padding: 0 10px; */
+.MMM-uptimekuma {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; /* Prevents wrapping */
+  justify-content: center; /* Centers the items horizontally */
+  width: 100%;
 }
 
-.MMM-uptimekuma tr td:first-child {
-    padding-left: 0;
+.MMM-uptimekuma .site {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px; /* Horizontal margin between items */
+  padding: 10px;
+  text-align: center;
+  min-width: 100px; /* Ensure there's a minimum width for each item */
+  flex: 1; /* Allows items to grow and fill the space */
+  box-sizing: border-box;
 }
 
-.MMM-uptimekuma td {
-    vertical-align: top;
-    padding-left: 15px;
+.MMM-uptimekuma .site-name {
+  font-size: 1.0em;
+  font-weight: normal;
+  margin-bottom: 5px;
 }
 
-/*  Colors  */
-
-.MMM-uptimekuma td.colored.online {
-    color: #9FDF9F;
+.MMM-uptimekuma .status {
+  font-size: 0.8em;
 }
 
-.MMM-uptimekuma td.colored.offline {
-    color: #FF8E99;
+.MMM-uptimekuma .status.online {
+  color: #9FDF9F;
 }
 
-.MMM-uptimekuma td.colored.paused {
-    color: #BCDDFF;
+.MMM-uptimekuma .status.offline {
+  color: #FF8E99;
 }
 
-.MMM-uptimekuma td.colored.seems-down {
-    color: #FFCC80;
+.MMM-uptimekuma .status.paused {
+  color: #BCDDFF;
 }
 
-.MMM-uptimekuma td.colored.not-checked-yet {
-    color: #D3D3D3;
+.MMM-uptimekuma .status.seems-down {
+  color: #FFCC80;
+}
+
+.MMM-uptimekuma .status.not-checked-yet {
+  color: #D3D3D3;
+}
+
+/* Fade Animation */
+@keyframes fade {
+  0% { opacity: 0; margin-left: 5px; }
+  50% { opacity: 1; }
+  100% { opacity: 0; margin-left: 5px; }
+}
+
+.MMM-uptimekuma .status {
+  animation: fade 5s linear infinite;
+}
+
+.MMM-uptimekuma .small {
+  font-size: smaller;
 }
