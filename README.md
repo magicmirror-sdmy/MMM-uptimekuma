@@ -1,7 +1,7 @@
 # MMM-uptimekuma [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/MikeBishop/MMM-uptimekuma/raw/master/LICENSE) 
 
 MagicMirror² module to get uptime data from an [Uptime
-Kuma](https://github.com/louislam/uptime-kuma) status page.
+Kuma](https://github.com/magicmirror-sdmy/uptime-kuma) status page.
 
 ## Examples
 ![](.github/text_single.png) ![](.github/icons_color_single.png)<br>
